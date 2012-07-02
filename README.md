@@ -3,7 +3,7 @@ Illuzion-Koffiemod
 
 Illuzion Koffiemod
 
-[Initial Build] | { Roy van Dongen }
+[Initial Build] | { Miepermans }
 
 [Arduino Code] | { Miepermans, davidvanleeuwen, drblok, Brambo123 }
 
@@ -22,4 +22,4 @@ Illuzion Koffiemod
 
 The idea is, to measure everything we are able to create with an B-10 coffeemachine. 
 
-
+[End Credits] | { Special thanks to the guys from the Tweakers forum for support while starting this project, Futhermore we had much support from the guys from Bitlair! Thanks guys!!! }
