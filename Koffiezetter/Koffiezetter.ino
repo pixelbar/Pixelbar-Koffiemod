@@ -66,7 +66,7 @@ int nummer;
 char tosend[68];
 int canmake = 0;
 
-//String secret = "";
+String secret = "";
 
 // INITIALIZATION
 
@@ -77,9 +77,9 @@ LiquidCrystal lcd(33, 30, 35, 32, 37 ,34);
 // Initialize Ethernet
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x30, 0x5A };
-byte ip[] = { 172,24,1,253 };
-byte server[] = { 172,24,1,2 };
-byte subnet[] = { 255,255,255,0 };
+byte ip[] = { 10,13,37,1 };
+byte server[] = { 10,13,37,2 };
+byte subnet[] = { 255,255,255,252 };
 
 EthernetClient client;
 
@@ -230,25 +230,25 @@ void selection() {
       switch(liter){
       case 1:
         digitalWrite(relais_lock,HIGH);
-        eth_update();
+        eth_update(false);
         lcdprogressbar(150000);
         prodcompleted();
         break;
       case 2:
         digitalWrite(relais_lock,HIGH);
-        eth_update();
+        eth_update(false);
         lcdprogressbar(300000);
         prodcompleted();
         break;
       case 3:
         digitalWrite(relais_lock,HIGH);
-        eth_update();
+        eth_update(false);
         lcdprogressbar(450000);
         prodcompleted();
         break;
       case 4:
         digitalWrite(relais_lock,HIGH);
-        eth_update();
+        eth_update(false);
         lcdprogressbar(600000);
         prodcompleted();
         break;
@@ -264,14 +264,12 @@ void selection() {
   }
 }
 
-// void eth_update(boolean must_delete) {
-void eth_update() {
-      // if must_delete == true
-      // prepare delete statement instead of normal add string/request
-      //sprintf(tosend, "GET /CoffeeCounter/index.php?remove_id=%d", secret);
-    // } else {
+void eth_update(boolean must_delete) {
+    if (must_delete == true) {
+      sprintf(tosend, "GET /CoffeeCounter/remove.php?remove_id=%d", secret);
+    } else {
       sprintf(tosend, "GET /CoffeeCounter/index.php?Quantity=%d&Product=%d&Token=1234567890", liter, select);
-        //}
+    }
     Serial.println(client.status(),DEC);
     if (client.connect(server, 80)) {
         client.println(tosend);
@@ -279,18 +277,14 @@ void eth_update() {
         client.stop();
     }
     
-       /*
     // reset the token
     secret = "";
-    if must_delete == false {
+    if (must_delete == false) {
       while (client.available()) {
         char c = client.read();
-        // add char c to unique id
-        // secret = secret + c;
-        // save the token to secret for future remove
+        secret = secret + c;
       }
     }
-    */ 
     delay(500); 
 } 
 
@@ -342,6 +336,7 @@ void lcdprogressbar(long ms){
 }
 
 void prodcompleted() {
+  secret = "";
   for(int i = 1; i < 5; i++) {
     lcd.setCursor(0, 1);
     lcd.print("/003   Bereiding  /003");
@@ -457,11 +452,7 @@ void quote() {
 
 void StopProduce() {
   if(canmake == 0) {
-    // obsolete
-      select = 5;
-      liter = 5;
-        // \obsolete
-      eth_update(); //eth_update(true);
+    eth_update(true);
   }
   canmake=1;
   lcd.clear();
