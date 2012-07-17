@@ -66,8 +66,6 @@ int nummer;
 char tosend[68];
 int canmake = 0;
 
-//String secret = "";
-
 // INITIALIZATION
 
 // Initialize LCD
@@ -264,33 +262,14 @@ void selection() {
   }
 }
 
-// void eth_update(boolean must_delete) {
 void eth_update() {
-      // if must_delete == true
-      // prepare delete statement instead of normal add string/request
-      //sprintf(tosend, "GET /CoffeeCounter/index.php?remove_id=%d", secret);
-    // } else {
-      sprintf(tosend, "GET /CoffeeCounter/index.php?Quantity=%d&Product=%d&Token=1234567890", liter, select);
-        //}
     Serial.println(client.status(),DEC);
     if (client.connect(server, 80)) {
+        sprintf(tosend, "GET /CoffeeCounter/index.php?Quantity=%d&Product=%d&Token=34789650234", select, liter);
         client.println(tosend);
         client.println();
         client.stop();
     }
-    
-       /*
-    // reset the token
-    secret = "";
-    if must_delete == false {
-      while (client.available()) {
-        char c = client.read();
-        // add char c to unique id
-        // secret = secret + c;
-        // save the token to secret for future remove
-      }
-    }
-    */ 
     delay(500); 
 } 
 
@@ -457,11 +436,9 @@ void quote() {
 
 void StopProduce() {
   if(canmake == 0) {
-    // obsolete
       select = 5;
       liter = 5;
-        // \obsolete
-      eth_update(); //eth_update(true);
+      eth_update();
   }
   canmake=1;
   lcd.clear();
