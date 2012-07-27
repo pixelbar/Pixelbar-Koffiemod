@@ -274,18 +274,17 @@ void eth_update(boolean must_delete) {
     if (client.connect(server, 80)) {
         client.println(tosend);
         client.println();
+        // reset the token    
+        if (must_delete == false) {
+          secret = "";
+          while (client.available()) {
+            char c = client.read();
+            secret = secret + c;
+          }
+        }
+        delay(500); 
         client.stop();
     }
-    
-    // reset the token
-    secret = "";
-    if (must_delete == false) {
-      while (client.available()) {
-        char c = client.read();
-        secret = secret + c;
-      }
-    }
-    delay(500); 
 } 
 
 void bootloader() {
